@@ -1,0 +1,205 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  orders    Order[]
+  addresses Address[]
+  reviews   Review[]
+  cart      Cart?
+}
+
+model Product {
+  id          String            @id @default(cuid())
+  title       String
+  slug        String            @unique
+  description String?
+  price       Int
+  images      String[]
+  tags        String[]
+  featured    Boolean           @default(false)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  variants    ProductVariant[]
+  collections ProductCollection[]
+  reviews     Review[]
+  orderItems  OrderItem[]
+  cartItems   CartItem[]
+}
+
+model ProductVariant {
+  id        String      @id @default(cuid())
+  productId String
+  product   Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  title     String      @default("Default Title")
+  sku       String?
+  price     Int?
+  inventory Int         @default(100)
+  soldOut   Boolean     @default(false)
+  orderItems OrderItem[]
+  cartItems  CartItem[]
+}
+
+model Collection {
+  id          String              @id @default(cuid())
+  title       String
+  slug        String              @unique
+  description String?
+  image       String?
+  sortOrder   Int                 @default(0)
+  products    ProductCollection[]
+}
+
+model ProductCollection {
+  productId    String
+  collectionId String
+  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+
+  @@id([productId, collectionId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  author    String
+  rating    Int
+  body      String
+  createdAt DateTime @default(now())
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  author    String
+  body      String
+  sortOrder Int      @default(0)
+  active    Boolean  @default(true)
+}
+
+model Announcement {
+  id        String  @id @default(cuid())
+  text      String
+  link      String?
+  active    Boolean @default(true)
+  sortOrder Int     @default(0)
+}
+
+model DiscountCode {
+  id        String       @id @default(cuid())
+  code      String       @unique
+  type      DiscountType
+  value     Int
+  minOrder  Int          @default(0)
+  active    Boolean      @default(true)
+  firstOrderOnly Boolean @default(false)
+}
+
+enum DiscountType {
+  PERCENT
+  FIXED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+model Order {
+  id            String      @id @default(cuid())
+  userId        String?
+  user          User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  status        OrderStatus @default(PENDING)
+  email         String
+  phone         String?
+  subtotal      Int
+  discount      Int         @default(0)
+  shipping      Int         @default(0)
+  total         Int
+  discountCode  String?
+  orderNote     String?
+  razorpayOrderId String?
+  razorpayPaymentId String?
+  shippingAddress Json
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id              String          @id @default(cuid())
+  orderId         String
+  order           Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId       String
+  product         Product         @relation(fields: [productId], references: [id])
+  variantId       String?
+  variant         ProductVariant? @relation(fields: [variantId], references: [id])
+  quantity        Int
+  priceAtPurchase Int
+  title           String
+}
+
+model Address {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  phone     String
+  line1     String
+  line2     String?
+  city      String
+  state     String
+  pincode   String
+  isDefault Boolean  @default(false)
+}
+
+model ContactInquiry {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String
+  company     String?
+  location    String?
+  queryType   String?
+  message     String?
+  source      String   @default("contact")
+  createdAt   DateTime @default(now())
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  userId    String     @unique
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  note      String?
+  updatedAt DateTime   @updatedAt
+  items     CartItem[]
+}
+
+model CartItem {
+  id        String          @id @default(cuid())
+  cartId    String
+  cart      Cart            @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product         @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variantId String?
+  variant   ProductVariant? @relation(fields: [variantId], references: [id])
+  quantity  Int             @default(1)
+
+  @@unique([cartId, productId, variantId])
+}
