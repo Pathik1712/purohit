@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ReviewList } from "@/components/reviews/ReviewList";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { formatPrice } from "@/lib/utils";
+import { resolveProductImage } from "@/lib/images";
 import { useCartStore } from "@/lib/cart-store";
 import { useCartUI } from "@/components/cart/cart-context";
 import { toast } from "sonner";
@@ -28,6 +29,7 @@ export function ProductDetail({ product, related }: { product: Product; related:
   const [reviewForm, setReviewForm] = useState({ author: "", rating: 5, body: "" });
   const addItem = useCartStore((s) => s.addItem);
   const { setOpen } = useCartUI();
+  const imageSrc = resolveProductImage(product.slug, product.images);
   const soldOut = product.variants.every((v) => v.soldOut);
 
   function handleAddToCart() {
@@ -38,7 +40,7 @@ export function ProductDetail({ product, related }: { product: Product; related:
         variantId: product.variants[0]?.id ?? null,
         title: product.title,
         price: product.price,
-        image: product.images[0] ?? "/products/placeholder.svg",
+        image: imageSrc,
       },
       quantity
     );
@@ -65,7 +67,7 @@ export function ProductDetail({ product, related }: { product: Product; related:
       <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
         <div className="relative aspect-square rounded-xl bg-muted overflow-hidden">
           <Image
-            src={product.images[0] || "/products/placeholder.svg"}
+            src={imageSrc}
             alt={product.title}
             fill
             className="object-cover"

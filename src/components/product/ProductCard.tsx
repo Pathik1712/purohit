@@ -6,6 +6,7 @@ import { Eye, ShoppingCart } from "lucide-react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
+import { resolveProductImage } from "@/lib/images";
 import { useCartStore } from "@/lib/cart-store";
 import { useCartUI } from "@/components/cart/cart-context";
 import { QuickView } from "./QuickView";
@@ -26,6 +27,7 @@ type ProductCardProps = {
 export function ProductCard({ product, index = 0 }: ProductCardProps) {
   const addItem = useCartStore((s) => s.addItem);
   const { setOpen } = useCartUI();
+  const imageSrc = resolveProductImage(product.slug, product.images);
   const soldOut = product.variants.every((v) => v.soldOut);
 
   function handleAddToCart() {
@@ -35,7 +37,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       variantId: product.variants[0]?.id ?? null,
       title: product.title,
       price: product.price,
-      image: product.images[0] ?? "/products/placeholder.svg",
+      image: imageSrc,
     });
     toast.success("Added to cart");
     setOpen(true);
@@ -47,16 +49,17 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "0px 0px -30% 0px" }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
+      whileHover={{ y: -4 }}
       className="group flex flex-col"
     >
       <div className="relative aspect-square overflow-hidden rounded-lg bg-muted mb-3">
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/products/${product.slug}`} className="block absolute inset-0">
           <Image
-            src={product.images[0] || "/products/placeholder.svg"}
+            src={imageSrc}
             alt={product.title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
-            sizes="(max-width: 768px) 50vw, 25vw"
+            sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 22vw"
           />
         </Link>
         {soldOut && (
@@ -64,7 +67,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
             Sold Out
           </span>
         )}
-        <div className="absolute inset-x-0 bottom-0 flex gap-2 p-3 opacity-0 group-hover:opacity-100 transition-opacity @media(hover:none):opacity-100">
+        <div className="absolute inset-x-0 bottom-0 flex gap-2 p-3 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
           <QuickView productSlug={product.slug}>
             <Button variant="secondary" size="sm" className="flex-1">
               <Eye className="h-4 w-4" />
@@ -82,7 +85,7 @@ export function ProductCard({ product, index = 0 }: ProductCardProps) {
       <p className="text-sm font-semibold mt-1">{formatPrice(product.price)}</p>
 
       <Button
-        className="mt-3 w-full"
+        className="mt-3 w-full min-h-10"
         size="sm"
         onClick={handleAddToCart}
         disabled={soldOut}

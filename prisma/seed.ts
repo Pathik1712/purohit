@@ -1,4 +1,5 @@
 import { PrismaClient, DiscountType } from "@prisma/client";
+import { PRODUCT_IMAGES, PLACEHOLDER_IMAGE } from "../src/lib/images";
 
 const prisma = new PrismaClient();
 
@@ -104,7 +105,7 @@ async function main() {
       data: {
         ...productData,
         description: `Delicious roasted snack made with nourishing superfoods. Palm oil free, cholesterol free.`,
-        images: [`/products/placeholder.svg`],
+        images: [PRODUCT_IMAGES[productData.slug] ?? PLACEHOLDER_IMAGE],
         tags: ["roasted", "healthy", "millet"],
         variants: {
           create: {

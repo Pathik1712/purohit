@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/utils";
+import { resolveProductImage } from "@/lib/images";
 import { useCartStore } from "@/lib/cart-store";
 import { useCartUI } from "@/components/cart/cart-context";
 import { toast } from "sonner";
@@ -36,6 +37,7 @@ function QuickViewContent({ productSlug }: { productSlug: string }) {
   }
 
   const soldOut = product.variants.every((v) => v.soldOut);
+  const imageSrc = resolveProductImage(product.slug, product.images);
 
   function handleAdd() {
     if (soldOut) return;
@@ -45,7 +47,7 @@ function QuickViewContent({ productSlug }: { productSlug: string }) {
         variantId: product!.variants[0]?.id ?? null,
         title: product!.title,
         price: product!.price,
-        image: product!.images[0] ?? "/products/placeholder.svg",
+        image: imageSrc,
       },
       quantity
     );
@@ -57,7 +59,7 @@ function QuickViewContent({ productSlug }: { productSlug: string }) {
     <div className="grid sm:grid-cols-2 gap-6">
       <div className="relative aspect-square rounded-lg bg-muted overflow-hidden">
         <Image
-          src={product.images[0] || "/products/placeholder.svg"}
+          src={imageSrc}
           alt={product.title}
           fill
           className="object-cover"
