@@ -1,13 +1,20 @@
 import type { MetadataRoute } from "next";
+import { isDatabaseConfigured } from "@/lib/env";
+import { mockGetCollections, mockGetProducts } from "@/lib/mock-data";
 import { prisma } from "@/lib/prisma";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
-  const [products, collections] = await Promise.all([
-    prisma.product.findMany({ select: { slug: true, updatedAt: true } }),
-    prisma.collection.findMany({ select: { slug: true } }),
-  ]);
+  const [products, collections] = isDatabaseConfigured()
+    ? await Promise.all([
+        prisma.product.findMany({ select: { slug: true, updatedAt: true } }),
+        prisma.collection.findMany({ select: { slug: true } }),
+      ])
+    : [
+        mockGetProducts().map((p) => ({ slug: p.slug, updatedAt: p.updatedAt })),
+        mockGetCollections().map((c) => ({ slug: c.slug })),
+      ];
 
   const staticPages = ["", "/about", "/corporate-gifting", "/export", "/collections", "/collections/all"].map(
     (path) => ({
