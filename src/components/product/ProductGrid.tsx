@@ -6,20 +6,42 @@ type Product = {
   slug: string;
   price: number;
   images: string[];
-  variants: { id: string; soldOut: boolean }[];
+  variants: {
+    id: string;
+    soldOut: boolean;
+  }[];
 };
 
 export function ProductGrid({ products }: { products: Product[] }) {
   if (!products.length) {
     return (
-      <p className="text-center text-muted-foreground py-12">No products found.</p>
+      <div className="flex min-h-[300px] items-center justify-center">
+        <p className="font-heading text-lg text-neutral-500">
+          No products found.
+        </p>
+      </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
-      {products.map((product, i) => (
-        <ProductCard key={product.id} product={product} index={i} />
+    <div
+      className="
+        grid
+        grid-cols-1
+        gap-x-4
+        gap-y-14
+        sm:grid-cols-2
+        lg:grid-cols-3
+        xl:gap-x-6
+        xl:gap-y-16
+      "
+    >
+      {products.map((product, index) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          index={index}
+        />
       ))}
     </div>
   );
