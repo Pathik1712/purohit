@@ -64,7 +64,7 @@ export function HeroSection() {
               className="mt-4 sm:mt-6 text-base sm:text-lg opacity-90 leading-relaxed max-w-xl"
             >
               Delicious roasted snacks made with nourishing superfoods such as quinoa, millets and Indian pulses,
-              seasoned in lip smacking authentic taste of India. Perfect for guilt-free indulgences!
+              seasoned smacking authentic taste of India. Perfect for guilt-free indulgences!
             </motion.p>
 
             <motion.div
