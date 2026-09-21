@@ -62,8 +62,8 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 className="
-            font-(--font-lora)
-            text-[15px]
+            font-(--font-nunito)
+            text-[18px]
             tracking-[-0.02em]
             text-black
             transition-opacity
@@ -111,8 +111,8 @@ export function Header() {
                 key={link.href}
                 href={link.href}
                 className="
-            font-(--font-lora)
-            text-[15px]
+            font-(--font-nunito)
+            text-[18px]
             tracking-[-0.02em]
             text-black
             transition-opacity

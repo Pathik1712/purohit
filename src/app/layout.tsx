@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins, Inter, Playfair_Display, Montserrat, Lora } from "next/font/google";
+import { Poppins, Inter, Playfair_Display, Montserrat, Lora, Nunito } from "next/font/google";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -7,7 +7,7 @@ import { Providers } from "@/components/Providers";
 import { getAnnouncements } from "@/lib/db/collections";
 import "./globals.css";
 
-const lora = Lora({
+const nunito = Nunito({
   subsets: ["latin"],
   variable: "--font-Lora",
   display: "swap",
@@ -46,8 +46,8 @@ export default async function RootLayout({
   const announcements = await getAnnouncements();
 
   return (
-    <html lang="en" className={`${poppins.variable} ${inter.variable} ${playfair.variable} ${lora.variable} h-full`}>
-      <body className={`${lora.variable} min-h-full flex flex-col antialiased`}>
+    <html lang="en" className={`${poppins.variable} ${inter.variable} ${playfair.variable} ${nunito.variable} h-full`}>
+      <body className={`${nunito.variable} min-h-full flex flex-col antialiased`}>
         <Providers>
           <AnnouncementBar announcements={announcements} />
           <Header />
