@@ -18,7 +18,7 @@ const categorySections = [
   { slug: "healthy-sweets", title: "Healthy Sweets", subtitle: null },
 ];
 
-const retailPartners = ["BigBasket", "Blinkit", "Swiggy Instamart", "Amazon", "Flipkart", "Nature's Basket"];
+// const retailPartners = ["BigBasket", "Blinkit", "Swiggy Instamart", "Amazon", "Flipkart", "Nature's Basket"];
 
 export default async function HomePage() {
   const [featuredProducts, testimonials, reviews] = await Promise.all([
