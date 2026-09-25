@@ -1,19 +1,25 @@
 :root {
-  --color-primary: #2D5016;
-  --color-primary-foreground: #FFFFFF;
-  --color-secondary: #F5A623;
-  --color-secondary-foreground: #1A1A1A;
-  --color-accent: #E85D04;
+  --color-primary: #6D1225;
+  --color-primary-foreground: #FFFDE8;
+  --color-secondary: #F37726;
+  --color-secondary-foreground: #1F1A17;
+  --color-accent: #E4023A;
   --color-accent-foreground: #FFFFFF;
-  --color-background: #FFFBF5;
-  --color-foreground: #1A1A1A;
-  --color-muted: #F5F0E8;
-  --color-muted-foreground: #6B6560;
-  --color-border: #E8E0D4;
-  --color-card: #FFFFFF;
-  --color-card-foreground: #1A1A1A;
+  --color-background: #FFF8E7;
+  --color-foreground: #303030;
+  --color-muted: #FCEFCF;
+  --color-muted-foreground: #5E5850;
+  --color-border: #EBDDB8;
+  --color-card: #FFFDE8;
+  --color-card-foreground: #303030;
   --color-destructive: #DC2626;
-  --color-success: #16A34A;
+  --color-success: #106831;
+
+  --color-purple: #84469A;
+  --color-lime: #A3CD3A;
+  --color-gold: #FFD700;
+  --color-sunshine: #FAF524;
+  --color-leaf: #106831;
 
   --font-heading: "Poppins", sans-serif;
   --font-body: "Inter", sans-serif;
@@ -24,5 +30,5 @@
   --radius-md: 8px;
   --radius-lg: 12px;
   --radius-xl: 16px;
-  --shadow-card: 0 2px 8px rgba(45, 80, 22, 0.08);
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.1);
 }

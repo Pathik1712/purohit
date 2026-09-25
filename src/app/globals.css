@@ -17,8 +17,14 @@
   --color-card-foreground: var(--color-card-foreground);
   --color-destructive: var(--color-destructive);
   --color-success: var(--color-success);
+  --color-purple: var(--color-purple);
+  --color-lime: var(--color-lime);
+  --color-gold: var(--color-gold);
+  --color-sunshine: var(--color-sunshine);
+  --color-leaf: var(--color-leaf);
   --font-sans: var(--font-body);
   --font-heading: var(--font-heading);
+  --font-accent: var(--font-accent);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
@@ -30,6 +36,22 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-color: var(--color-primary) var(--color-muted);
+  caret-color: var(--color-accent);
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-foreground);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+a {
+  text-underline-offset: 0.2em;
 }
 
 body {
@@ -54,9 +76,21 @@ h1, h2, h3, h4, h5, h6 {
   padding-inline: clamp(16px, 4vw, 32px);
 }
 
+.wave-edge {
+  height: 18px;
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='18' viewBox='0 0 56 18'%3E%3Cpath d='M0 9 Q14 0 28 9 T56 9 V18 H0Z'/%3E%3C/svg%3E");
+  mask-size: 56px 18px;
+  mask-repeat: repeat-x;
+  mask-position: bottom left;
+}
+
 @keyframes marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
+}
+
+@keyframes route {
+  to { stroke-dashoffset: -22; }
 }
 
 .animate-marquee {
